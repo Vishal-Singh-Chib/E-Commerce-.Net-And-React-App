@@ -19,7 +19,7 @@ namespace API.Controllers
         public async Task<ActionResult<List<Product>>> GetProducts()
         {
             return   await context.Products.ToListAsync(); 
-        }
+        } 
 
         [HttpGet("{Id}")]
         public async Task<ActionResult<Product>> GetProduct(int Id)
