@@ -15,7 +15,7 @@ var app = builder.Build();
 
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3001");
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3000","https://localhost:3001");
 });
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
