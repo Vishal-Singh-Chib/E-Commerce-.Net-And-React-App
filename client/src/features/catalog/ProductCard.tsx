@@ -1,6 +1,5 @@
 import { Button, Card, CardActions, CardContent, CardMedia, Typography } from "@mui/material"
 import type { Product } from "../../app/models/product"
-import { WidthFull } from "@mui/icons-material"
 
  type Props = {
     product :Product
@@ -8,7 +7,14 @@ import { WidthFull } from "@mui/icons-material"
 
 export default function ProductCard({product}:Props) {
   return (
-    <Card elevation={3} sx={{width:20,borderRadius}}>
+    <Card elevation={3}
+     sx={{
+        width:250,
+        borderRadius:2,
+        display:'flex',
+        flexDirection:'column',
+        justifyContent:'space-between'
+    }}>
       <CardMedia 
       sx={{height:240,backgroundSize:'cover'}}
       image={product.pictureUrl ? product.pictureUrl : ''}

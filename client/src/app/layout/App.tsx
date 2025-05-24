@@ -1,34 +1,43 @@
 import { useEffect, useState } from "react"
 import type { Product } from "../models/product";
 import Catalog from "../../features/catalog/Catalog";
-import { Button, Container, Typography } from "@mui/material";
+import {   Box, Container, createTheme, CssBaseline, ThemeProvider    } from "@mui/material";
+import NavBar from "./NavBar";
+
 
 function App() {
 const [products,setProduct] = useState<Product[]>([]);
-
+const [darkMode, setDarkMode] = useState(false);
+    
+const toggleTheme = () => {
+    setDarkMode(prev => !prev); // ✅ toggles the state properly
+  };
+const palleteType= darkMode ? 'dark':'light'
+const theme = createTheme({
+  palette:{
+    mode:palleteType,
+    background:{default : (palleteType==='light')
+      ?   'radial-gradient(circle,rgb(38, 89, 177), #6b8ecf)'
+        : 'radial-gradient(circle,rgb(6, 42, 105), #6b8ecf)'} 
+  }
+})
 useEffect(()=>{
  fetch('https://localhost:5001/api/products').then(response=>response.json())
  .then(data=>setProduct(data)); 
   },[])
 
-const addProduct =()=>{
-      setProduct(prevState=>[...prevState,{
-      name : 'ProductNo'+ (prevState.length+1),
-      price : (prevState.length*100+100),
-      id : prevState.length+1,
-      quantityInStock : 100,
-      description : "",
-      type:"Test1",
-      brand :"Test1",
-      pictureUrl:""
-    }]);
-}
   return (
-      <Container>
-        <Typography variant='h4'>Re-store</Typography>
-         <Button variant='contained' onClick={addProduct}>Add Product</Button>
-        <Catalog products ={products}/>
-      </Container>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline/>
+      <NavBar toggleTheme={toggleTheme} darkMode={darkMode}/>
+      <Box sx={{minHeight:'100vh',background: darkMode ?   'radial-gradient(circle,#1e3a3a,#111b27)'
+        : 'radial-gradient(circle,#baecf9,#fof9ff)', py:6}}
+        > 
+        <Container maxWidth="xl" sx={{ mt: 8 }}>
+          <Catalog products={products} />
+        </Container>
+      </Box>
+    </ThemeProvider>
+  );
 }
 export default App

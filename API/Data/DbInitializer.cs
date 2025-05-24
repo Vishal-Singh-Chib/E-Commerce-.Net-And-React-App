@@ -27,7 +27,7 @@ namespace API.Data
                     Name = "Test",
                     Description = "Test",
                     Price = 2000,
-                    PictureUrl = "C:\\Users\\visha\\Downloads\\courseAssets\\__MACOSX\\courseAssets\\images\\products\\sb-core2",
+                    PictureUrl = "/images/products/sb-core2",
                     Brand = "NetCore",
                     Type = "Boards",
                     QuantityInStock = 100
@@ -38,7 +38,7 @@ namespace API.Data
                     Name = "Angular Speedster Board 2000",
                     Description = "High-performance board designed for Angular enthusiasts.",
                     Price = 2500,
-                    PictureUrl = "C:\\Users\\visha\\Downloads\\courseAssets\\images\\products\\glove-react1.png",
+                    PictureUrl = "/images/products/glove-react1.png",
                     Brand = "Angular",
                     Type = "Boards",
                     QuantityInStock = 75
@@ -49,7 +49,7 @@ namespace API.Data
                     Name = "Green React Developer Board",
                     Description = "Eco-friendly developer board optimized for React.js workflows.",
                     Price = 1800,
-                    PictureUrl = "C:\\Users\\visha\\Downloads\\courseAssets\\images\\products\\hat-react2.png",
+                    PictureUrl = "/images/products/hat-react2.png",
                     Brand = "Reactify",
                     Type = "Boards",
                     QuantityInStock = 60
@@ -60,7 +60,7 @@ namespace API.Data
                     Name = "Vue Productivity Kit",
                     Description = "All-in-one kit to boost Vue.js application development.",
                     Price = 2100,
-                    PictureUrl = "C:\\Users\\visha\\Downloads\\courseAssets\\images\\products\\sb-ang1.png",
+                    PictureUrl = "/images/products/sb-ang1.png",
                     Brand = "VueMaster",
                     Type = "Kits",
                     QuantityInStock = 50
@@ -71,7 +71,61 @@ namespace API.Data
                     Name = "Fullstack .NET Mega Board",
                     Description = "Powerful dev board for fullstack .NET developers.",
                     Price = 3000,
-                    PictureUrl = "C:\\Users\\visha\\Downloads\\courseAssets\\images\\products\\net-mega1.png",
+                    PictureUrl = "/images/products/sb-ang1.png",
+                    Brand = ".NETify",
+                    Type = "Boards",
+                    QuantityInStock = 40
+                },new()
+                {
+
+                    Name = "Test",
+                    Description = "Test",
+                    Price = 2000,
+                    PictureUrl = "/images/products/sb-core2",
+                    Brand = "NetCore",
+                    Type = "Boards",
+                    QuantityInStock = 100
+                },
+                new()
+                {
+
+                    Name = "Angular Speedster Board 2000",
+                    Description = "High-performance board designed for Angular enthusiasts.",
+                    Price = 2500,
+                    PictureUrl = "/images/products/glove-react1.png",
+                    Brand = "Angular",
+                    Type = "Boards",
+                    QuantityInStock = 75
+                },
+                new()
+                {
+
+                    Name = "Green React Developer Board",
+                    Description = "Eco-friendly developer board optimized for React.js workflows.",
+                    Price = 1800,
+                    PictureUrl = "/images/products/hat-react2.png",
+                    Brand = "Reactify",
+                    Type = "Boards",
+                    QuantityInStock = 60
+                },
+                new()
+                {
+
+                    Name = "Vue Productivity Kit",
+                    Description = "All-in-one kit to boost Vue.js application development.",
+                    Price = 2100,
+                    PictureUrl = "/images/products/sb-ang1.png",
+                    Brand = "VueMaster",
+                    Type = "Kits",
+                    QuantityInStock = 50
+                },
+                new()
+                {
+
+                    Name = "Fullstack .NET Mega Board",
+                    Description = "Powerful dev board for fullstack .NET developers.",
+                    Price = 3000,
+                    PictureUrl = "/images/products/sb-ang1.png",
                     Brand = ".NETify",
                     Type = "Boards",
                     QuantityInStock = 40
