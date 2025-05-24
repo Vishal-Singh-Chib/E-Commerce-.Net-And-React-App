@@ -14,3 +14,5 @@ Restart Visual Studio after installation.
 npm install vite-plugin-mkcert - D
 
 UI: https://v6.mui.com/material-ui/getting-started/installation/
+
+npm install react-router-dom
