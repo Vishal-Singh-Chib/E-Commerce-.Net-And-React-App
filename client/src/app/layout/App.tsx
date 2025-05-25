@@ -28,7 +28,7 @@ const theme = createTheme({
       <CssBaseline/>
       <NavBar toggleTheme={toggleTheme} darkMode={darkMode}/>
       <Box sx={{minHeight:'100vh',background: darkMode ?   'radial-gradient(circle,#1e3a3a,#111b27)'
-        : 'radial-gradient(circle,#baecf9,#fof9ff)', py:6}}
+        : 'radial-gradient(circle,rgb(213, 221, 234), #6b8ecf)', py:6}}
         > 
         <Container maxWidth="xl" sx={{ mt: 8 }}>
           <Outlet />
