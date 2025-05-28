@@ -31,7 +31,7 @@ export default function ProductCard({product}:Props) {
          variant='h6'
         sx={{color:'secondary.main'}}
         >    
-        ${(product.price/100).toFixed(2)}
+        ₹{(product.price/100).toFixed(2)}
         </Typography>
       </CardContent>
       <CardActions sx={{justifyContent:'space-between'}}>

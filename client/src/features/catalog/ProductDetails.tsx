@@ -1,22 +1,41 @@
-import { useEffect, useState } from "react";
-import type { Product } from "../../app/models/product";
-import { useParams } from "react-router-dom";
-import { Button, Grid2, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
-import { Label } from "@mui/icons-material";
+// import { useEffect, useState } from "react";
+// import type { Product } from "../../app/models/product";
+ import { useParams } from "react-router-dom";
+import { Box, Button, CircularProgress, Grid2, Table, TableBody, TableCell, TableContainer, TableRow, TextField, Typography } from "@mui/material";
+import { useFetchProductDetailsQuery } from "./catalogAPI";
+// import { Label } from "@mui/icons-material";
 
 
 export default function ProductDetails() {
-  const [product, setProduct] = useState<Product | null>(null);
-  const { id } = useParams();
 
-  useEffect(() => {
-    fetch(`https://localhost:5001/api/products/${id}`)
-      .then((response) => response.json())
-      .then((data) => setProduct(data))
-      .catch((error) => console.log(error));
-  }, [id]);
+  // const [product, setProduct] = useState<Product | null>(null);
+   const { id } = useParams();
 
-  if (!product) return <div>Loading...</div>;
+  // useEffect(() => {
+  //   fetch(`https://localhost:5001/api/products/${id}`)
+  //     .then((response) => response.json())
+  //     .then((data) => setProduct(data))
+  //     .catch((error) => console.log(error));
+  // }, [id]);
+ const {data:product,isLoading} =useFetchProductDetailsQuery(id ? parseInt(id) : 0);
+ 
+  if (isLoading || !product) return   (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '60vh',
+        gap: 2,
+      }}
+    >
+      <CircularProgress color="primary" />
+      <Typography variant="h6" color="text.secondary">
+        Loading, please wait...
+      </Typography>
+    </Box>
+  );
 const productDetails = [
       {label : 'Name' ,value : product.name},
       {label : 'Description' ,value : product.description},
@@ -39,7 +58,7 @@ const productDetails = [
            {product.name}
         </Typography>
          <Typography variant='h4' color='secondary'>
-           ${(product.price/100).toFixed(2)}
+           ₹{(product.price/100).toFixed(2)}
         </Typography>
         <TableContainer>
         <Table sx={{'& td':{fontSize :'1rem'}}}>
@@ -79,19 +98,7 @@ const productDetails = [
         </Grid2>
       </Grid2>
       
-      <p>{product.description}</p>
-      <p>
-        <strong>Brand:</strong> {product.brand}
-      </p>
-      <p>
-        <strong>Type:</strong> {product.type}
-      </p>
-      <p>
-        <strong>Price:</strong> ${product.price}
-      </p>
-      <p>
-        <strong>In Stock:</strong> {product.quantityInStock}
-      </p>
+     
     </Grid2>
   );
 }
