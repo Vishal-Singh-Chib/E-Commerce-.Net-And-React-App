@@ -1,7 +1,7 @@
 import { DarkMode, LightMode, ShoppingCart } from "@mui/icons-material";
 import {
   AppBar,
-  Badge,
+ 
   Box,
   IconButton,
   LinearProgress,
@@ -10,18 +10,17 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import ThreePIcon from '@mui/icons-material/ThreeP';
 import { NavLink } from "react-router-dom";
 import { useAppSelector } from "../store/store";
 
 const midLinks = [ 
-  { title: "catalog", path: "/catalog" },
   { title: "about", path: "/about" },
   { title: "contact", path: "/contact" },
 ];
 
 const rightLinks = [
-  { title: "login", path: "/login" },
-  { title: "register", path: "/register" },
+  { title: "register / login", path: "/login" }
 ];
 
 const navStyles = {
@@ -45,14 +44,15 @@ export default function NavBar({ toggleTheme, darkMode }: Props) {
     <AppBar position="fixed">
       <Toolbar sx={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
         <Box display='flex' alignItems='center'>
-          <Typography component={NavLink} to="/" variant="h6" sx={navStyles}>
-            RE-STORE
-          </Typography>
-          <IconButton onClick={toggleTheme}>
-            {darkMode ? <DarkMode /> : <LightMode sx={{ color: "yellow" }} />}
+           <IconButton style={{ color: "white" }}>
+          <ThreePIcon></ThreePIcon>
           </IconButton>
-        </Box>
-        <List sx={{ display: "flex" }}>
+          <Typography component={NavLink} to="/" variant="h6" sx={navStyles}>
+            SOCIAL-PLATFORM
+          </Typography>
+          
+         
+          <List sx={{ display: "flex",alignContent:'flex-start' }}>
           {midLinks.map(({ title, path }) => (
             <ListItem component={NavLink} to={path} key={path} sx={navStyles}>
               {" "}
@@ -60,13 +60,13 @@ export default function NavBar({ toggleTheme, darkMode }: Props) {
             </ListItem>
           ))}
         </List>
+        </Box>
+        
 
        <Box display='flex' alignItems='center'>
-         <IconButton style={{ color: "white" }}>
-          <Badge badgeContent="4" color="secondary">
-            <ShoppingCart></ShoppingCart>
-          </Badge>
-        </IconButton>
+         <IconButton onClick={toggleTheme}>
+            {darkMode ? <DarkMode /> : <LightMode sx={{ color: "yellow" }} />}
+          </IconButton>
         <List sx={{ display: "flex" }}>
           {" "}
           {rightLinks.map(({ title, path }) => (

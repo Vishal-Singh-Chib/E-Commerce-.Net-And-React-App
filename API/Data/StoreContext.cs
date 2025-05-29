@@ -1,6 +1,7 @@
 using System;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
+using static API.Entities.Content;
 
 namespace API.Data
 {
@@ -13,6 +14,10 @@ namespace API.Data
         }
 
         // DbSet property for the Products table
-        public DbSet<Product>? Products { get; set; }
+        public DbSet<Login>? Login { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Follow> Follows { get; set; }
+
     }
 }

@@ -6,20 +6,9 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { darkModeOn, lightModeOn } from "./uiSlice";
 
 
-// const getInitialDarkMode = ()=>{
-//   const storeDarkMode = localStorage.getItem('darkMode');
-//   return storeDarkMode ? JSON.parse(storeDarkMode):true;
-// }
-
 function App() {
 const {darkMode} =   useAppSelector(state=>state.ui);
 const dispatch = useAppDispatch();
-// const [darkMode, setDarkMode] = useState(getInitialDarkMode);
-    
-// const toggleTheme = () => {
-//   localStorage.setItem('darkMode',JSON.stringify(!darkMode))
-//     setDarkMode(!darkMode); // ✅ toggles the state properly
-//   };
 
 const toggleTheme = () => {
     if(darkMode)   
@@ -36,7 +25,6 @@ const theme = createTheme({
         : 'radial-gradient(circle,rgb(6, 42, 105), #6b8ecf)'} 
   }
 })
-
 
   return (
     <ThemeProvider theme={theme}>

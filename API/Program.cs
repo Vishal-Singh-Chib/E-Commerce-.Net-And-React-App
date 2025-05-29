@@ -1,5 +1,9 @@
 using API.Data;
+using API.TokenService;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +13,25 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<StoreContext>(opt =>{
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(opt =>
+    {
+        opt.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6")),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
 builder.Services.AddCors();
 var app = builder.Build();
+
+
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.UseCors(opt =>
 {

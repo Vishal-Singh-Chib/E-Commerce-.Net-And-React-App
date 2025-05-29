@@ -1,8 +1,9 @@
 import { configureStore, legacy_createStore } from "@reduxjs/toolkit";
 import counterReducer, { counterSlice } from "../../features/contact/counterReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { catalogAPI } from "../../features/catalog/catalogAPI";
 import { uiSlice } from "../layout/uiSlice";
+ import { PostAPI } from "../../features/post/PostAPI";
+import { LoginAPI } from "../../features/login/loginAPI";
 
 export function configureTheStore(){
     return legacy_createStore(counterReducer)
@@ -10,12 +11,14 @@ export function configureTheStore(){
 
 export const store = configureStore({
     reducer:{
-        [catalogAPI.reducerPath]:catalogAPI.reducer,
+        [LoginAPI.reducerPath]:LoginAPI.reducer,
+        [PostAPI.reducerPath]: PostAPI.reducer, 
         counter:counterSlice.reducer,
         ui : uiSlice.reducer
     },
     middleware :(getdefaultMiddleware) => 
-        getdefaultMiddleware().concat(catalogAPI.middleware)
+        getdefaultMiddleware().concat(LoginAPI.middleware).concat(PostAPI.middleware),
+    
 
 })
 

@@ -2,18 +2,22 @@ import { fetchBaseQuery, type BaseQueryApi, type FetchArgs } from "@reduxjs/tool
 import { startLoading, stopLoading } from "../layout/uiSlice";
 
 const customBaseQuery = fetchBaseQuery({
-    baseUrl:'https://localhost:5001/api'
+    baseUrl:'https://localhost:5001/api',
+    prepareHeaders: (headers) => {
+    const token = localStorage.getItem('token');
+    console.log("Using token:", token); // ✅ Debug
+    if (token) {
+      headers.set('Authorization', `Bearer ${token}`);
+    }
+    return headers;
+  },
 })
 
-
-
-export const baseQueryWithErrorHandling = async (args:string| FetchArgs,api:BaseQueryApi,extraOptions : object)=>{
-   
+export const baseQueryWithErrorHandling = async (args:string| FetchArgs,api:BaseQueryApi,extraOptions : object)=>{ 
     api.dispatch(startLoading());
-    const sleep = ()=> new Promise(resolve=> setTimeout(resolve,1000));
-     await sleep();
     const result = await customBaseQuery(args,api,extraOptions);
-      api.dispatch(stopLoading());
+    api.dispatch(stopLoading());
+     
     if(result.error){
         const {status,data}=result.error;
         console.log(status,data);
