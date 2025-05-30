@@ -10,9 +10,8 @@ import {
   CircularProgress
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import type { Message } from "../../app/models/Message";
 import { useLoginHandler } from "./LoginProcessor";
-import { Link } from 'react-router-dom';
+import type { Message } from "../../app/models/Message";
 
 
 export const LoginPage: React.FC = () => {
@@ -93,7 +92,6 @@ export const LoginPage: React.FC = () => {
           />
 
           <Button
-           
             variant="contained"
             fullWidth
             color="primary"

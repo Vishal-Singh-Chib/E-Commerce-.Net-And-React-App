@@ -4,12 +4,12 @@ import type { Post } from "../../app/models/content";
 
 export const PostAPI = createApi({
   reducerPath: "Content",
-  tagTypes: ["Posts"], // ✅ Enables auto-refetching
+  tagTypes: ["Posts"],
   baseQuery: baseQueryWithErrorHandling,
   endpoints: (builder) => ({
     getPosts: builder.query<Post[], void>({
-      query: () => "Content",
-      providesTags: ["Posts"], // ✅ Tells RTK Query this data is taggable
+      query: () => "Content", // updated endpoint
+      providesTags: ["Posts"],
     }),
 
     createPost: builder.mutation<Post, { content: string; authorEmail: string }>({
@@ -18,7 +18,7 @@ export const PostAPI = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Posts"], // ✅ Triggers re-fetch of getPosts
+      invalidatesTags: ["Posts"],
     }),
 
     votePost: builder.mutation<Post, { id: number; up: boolean }>({
@@ -26,16 +26,16 @@ export const PostAPI = createApi({
         url: `Content/${id}/vote?up=${up}`,
         method: "POST",
       }),
-      invalidatesTags: ["Posts"], // ✅
+      invalidatesTags: ["Posts"],
     }),
 
-    commentPost: builder.mutation<Comment, { id: number; text: string ;authorEmail: string }>({
+    commentPost: builder.mutation<Comment, { id: number; text: string; authorEmail: string }>({
       query: (body) => ({
         url: `Content/${body.id}/comment`,
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Posts"], // ✅
+      invalidatesTags: ["Posts"],
     }),
 
     commentChildPost: builder.mutation<
@@ -47,7 +47,27 @@ export const PostAPI = createApi({
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Posts"], // ✅
+      invalidatesTags: ["Posts"],
+    }),
+
+    // ✅ Follow a user
+    followUser: builder.mutation<void, { followerEmail: string; followingEmail: string }>({
+      query: (body) => ({
+        url: "Content/follow",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: ["Posts"], // re-fetch to update post ordering
+    }),
+
+    // ✅ Unfollow a user
+    unfollowUser: builder.mutation<void, { followerEmail: string; followingEmail: string }>({
+      query: (body) => ({
+        url: "Content/unfollow",
+        method: "DELETE",
+        body,
+      }),
+      invalidatesTags: ["Posts"],
     }),
   }),
 });
@@ -58,4 +78,6 @@ export const {
   useVotePostMutation,
   useCommentPostMutation,
   useCommentChildPostMutation,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
 } = PostAPI;

@@ -29,4 +29,23 @@
     followerEmail: string;
     followingEmail: string;
   }
+
+  // Types
+  export type CommentType = {
+    id: number;
+    text: string;
+    authorEmail: string;
+    createdAt: string;
+    comments: CommentType[];
+  };
+  
+  export type PostType = {
+    id: number;
+    content: string;
+    authorEmail: string;
+    createdAt: string;
+    upvotes: number;
+    downvotes: number;
+    comments: CommentType[];
+  };
  

@@ -1,4 +1,4 @@
-import { DarkMode, LightMode, ShoppingCart } from "@mui/icons-material";
+import { DarkMode, LightMode } from "@mui/icons-material";
 import {
   AppBar,
  

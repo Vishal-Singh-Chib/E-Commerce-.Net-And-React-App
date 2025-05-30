@@ -9,7 +9,9 @@ import {
   IconButton,
   Avatar,
   Divider,
+  Tooltip,
 } from "@mui/material";
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ReplyIcon from "@mui/icons-material/Reply";
@@ -19,26 +21,10 @@ import {
   useVotePostMutation,
   useCommentPostMutation,
   useCommentChildPostMutation,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
 } from "../post/PostAPI";
-
-// Types
-type CommentType = {
-  id: number;
-  text: string;
-  authorEmail: string;
-  createdAt: string;
-  comments?: CommentType[];
-};
-
-type PostType = {
-  id: number;
-  content: string;
-  authorEmail: string;
-  createdAt: string;
-  upvotes: number;
-  downvotes: number;
-  comments: CommentType[];
-};
+import type { CommentType, PostType } from "../../app/models/content";
 
 export const Post: React.FC = () => {
   const { data: posts, refetch } = useGetPostsQuery();
@@ -46,10 +32,13 @@ export const Post: React.FC = () => {
   const [votePost] = useVotePostMutation();
   const [commentPost] = useCommentPostMutation();
   const [commentChildPost] = useCommentChildPostMutation();
+  const [followUser] = useFollowUserMutation();
+  const [unfollowUser] = useUnfollowUserMutation();
 
   const [newPost, setNewPost] = useState("");
   const [commentInputs, setCommentInputs] = useState<{ [key: string]: string }>({});
   const [visibleComments, setVisibleComments] = useState<{ [key: number]: boolean }>({});
+  const [following, setFollowing] = useState<string[]>([]);
 
   const userEmail = localStorage.getItem("user") ?? "anonymous";
 
@@ -139,7 +128,7 @@ export const Post: React.FC = () => {
   };
 
   return (
-    <Box p={3} bgcolor="#e3eaf6" minHeight="100vh">
+    <Box p={3} minHeight="100vh">
       <Card sx={{ mb: 3, p: 2, borderRadius: 3, boxShadow: 3 }}>
         <Typography variant="h6" mb={2}>Create a Post</Typography>
         <Box display="flex" gap={2}>
@@ -162,9 +151,47 @@ export const Post: React.FC = () => {
         return (
           <Card key={post.id} sx={{ mb: 3, borderRadius: 3, boxShadow: 2 }}>
             <CardContent>
-              <Typography variant="body1" mb={1}>
-                <strong>{post.authorEmail.split("@")[0]}:</strong> {post.content}
-              </Typography>
+              <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+                <Typography variant="body1">
+                  <strong>{post.authorEmail.split("@")[0]}:</strong> {post.content}
+                </Typography>
+
+                {post.authorEmail !== userEmail && (
+                  <Tooltip title={following.includes(post.authorEmail) ? "Unfollow" : "Follow"}>
+                    <IconButton
+                      aria-label="Follow user"
+                      color="primary"
+                      onClick={async () => {
+                        try {
+                          if (following.includes(post.authorEmail)) {
+                            await unfollowUser({
+                              followerEmail: userEmail,
+                              followingEmail: post.authorEmail,
+                            }).unwrap();
+                            setFollowing((prev) =>
+                              prev.filter((email) => email !== post.authorEmail)
+                            );
+                          } else {
+                            await followUser({
+                              followerEmail: userEmail,
+                              followingEmail: post.authorEmail,
+                            }).unwrap();
+                            setFollowing((prev) => [...prev, post.authorEmail]);
+                          }
+                          refetch();
+                        } catch (err) {
+                          console.error("Follow/unfollow failed", err);
+                        }
+                      }}
+                    >
+                      <PersonAddAltIcon
+                        color={following.includes(post.authorEmail) ? "disabled" : "inherit"}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                )}
+              </Box>
+
               <Box display="flex" alignItems="center" gap={1}>
                 <IconButton onClick={() => votePost({ id: post.id, up: true })}>
                   <ThumbUpIcon />

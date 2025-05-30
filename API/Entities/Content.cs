@@ -14,7 +14,7 @@
             public List<Comment> Comments { get; set; } = new();
         }
 
-        public class commentRequest
+        public class CommentRequest
         {
             public int? ParentCommentId { get; set; }
             public string Text { get; set; } = "";
@@ -44,6 +44,12 @@
             public int Id { get; set; }
             public string FollowerEmail { get; set; } = "";
             public string FollowingEmail { get; set; } = "";
+        }
+        public class UserFollow
+        {
+            public int Id { get; set; }
+            public string FollowerEmail { get; set; } = string.Empty;
+            public string FolloweeEmail { get; set; } = string.Empty;
         }
 
     }

@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using static API.Entities.Content;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace API.Controllers
 {
@@ -44,7 +46,7 @@ namespace API.Controllers
         }
         [HttpPost("{id}/comment")]
         [Authorize]
-        public async Task<IActionResult> Comment(int id, [FromBody] commentRequest dto)
+        public async Task<IActionResult> Comment(int id, [FromBody] CommentRequest dto)
         {
             var post = await _context.Posts.FindAsync(id);
             if (post == null) return NotFound("Post not found.");
@@ -67,7 +69,7 @@ namespace API.Controllers
 
         [HttpPost("comment/{parentCommentId}/reply")]
         [Authorize]
-        public async Task<IActionResult> ReplyToComment([FromBody] commentRequest dto)
+        public async Task<IActionResult> ReplyToComment([FromBody] CommentRequest dto)
         {
             var parentComment = await _context.Comments.FindAsync(dto.ParentCommentId);
             if (parentComment == null) return NotFound("Parent comment not found.");
@@ -85,17 +87,53 @@ namespace API.Controllers
 
             return Ok(reply);
         }
+
+        [HttpPost("follow")]
+        public async Task<IActionResult> Follow([FromBody] Follow dto)
+        {
+            if (dto.FollowerEmail == dto.FollowingEmail)
+                return BadRequest("You cannot follow yourself.");
+
+            var existing = await _context.UserFollows
+                .FirstOrDefaultAsync(f => f.FollowerEmail == dto.FollowerEmail && f.FolloweeEmail == dto.FollowingEmail);
+
+            if (existing != null)
+            {
+                _context.UserFollows.Remove(existing); // toggle unfollow
+            }
+            else
+            {
+                _context.UserFollows.Add(new UserFollow
+                {
+                    FollowerEmail = dto.FollowerEmail,
+                    FolloweeEmail = dto.FollowingEmail
+                });
+            }
+
+            await _context.SaveChangesAsync();
+            return Ok();
+        } 
         [HttpGet]
         public async Task<IActionResult> GetPosts()
         {
-            // Step 1: Load posts
+            // Step 0: Identify current user
+            var currentUserEmail = User.Claims.FirstOrDefault()?.Value;
+            // or use from JWT, etc.
+
+            // Step 1: Load all posts
             var posts = await _context.Posts.ToListAsync();
 
             // Step 2: Load all comments
             var allComments = await _context.Comments.ToListAsync();
 
-            // Step 3: Attach comments to each post
-            var result = posts.Select(post =>
+            // Step 3: Load follows
+            var followingEmails = await _context.UserFollows
+                .Where(f => f.FollowerEmail == currentUserEmail)
+                .Select(f => f.FolloweeEmail)
+                .ToListAsync();
+
+            // Step 4: Attach comments to each post
+            var postResults = posts.Select(post =>
             {
                 var commentsForPost = allComments
                     .Where(c => c.PostId == post.Id)
@@ -113,11 +151,17 @@ namespace API.Controllers
                     post.CreatedAt,
                     post.Upvotes,
                     post.Downvotes,
-                    Comments = GetNestedComments(commentsForPost, rootComments)
+                    Comments = GetNestedComments(commentsForPost, rootComments),
+                    IsFollowedUser = followingEmails.Contains(post.AuthorEmail)
                 };
             });
 
-            return Ok(result.OrderByDescending(post => post.CreatedAt));
+            // Step 5: Order followed users first, then by date
+            var sortedPosts = postResults
+                .OrderByDescending(p => p.IsFollowedUser)
+                .ThenByDescending(p => p.CreatedAt);
+
+            return Ok(sortedPosts);
         }
 
         private List<object> GetNestedComments(List<Comment> allComments, List<Comment> currentLevel)
@@ -134,6 +178,7 @@ namespace API.Controllers
                 )
             }).ToList<object>();
         }
+
 
 
 

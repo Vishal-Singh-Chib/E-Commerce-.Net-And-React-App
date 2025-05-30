@@ -18,6 +18,7 @@ namespace API.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Follow> Follows { get; set; }
+        public DbSet<UserFollow> UserFollows { get; set; }
 
     }
 }

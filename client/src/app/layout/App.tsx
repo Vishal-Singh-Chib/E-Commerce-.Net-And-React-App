@@ -1,10 +1,8 @@
-// import { useState } from "react"
 import {   Box, Container, createTheme, CssBaseline, ThemeProvider    } from "@mui/material";
 import NavBar from "./NavBar";
 import { Outlet } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import { darkModeOn, lightModeOn } from "./uiSlice";
-
 
 function App() {
 const {darkMode} =   useAppSelector(state=>state.ui);
@@ -14,7 +12,6 @@ const toggleTheme = () => {
     if(darkMode)   
      dispatch(lightModeOn());
       else dispatch(darkModeOn());
-     // ✅ toggles the state properly
   };
 const palleteType= darkMode ? 'dark':'light'
 const theme = createTheme({

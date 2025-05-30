@@ -96,6 +96,25 @@ namespace API.Data.Migrations
                     b.ToTable("Posts");
                 });
 
+            modelBuilder.Entity("API.Entities.Content+UserFollow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FolloweeEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FollowerEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserFollows");
+                });
+
             modelBuilder.Entity("Login", b =>
                 {
                     b.Property<int>("Id")
