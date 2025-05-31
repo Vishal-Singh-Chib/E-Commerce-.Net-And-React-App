@@ -2,7 +2,6 @@
 import type { Message } from "../../app/models/Message";
 import { useLoginOrRegisterMutation } from "./loginAPI";
 import { useNavigate } from "react-router-dom";
-
 export const useLoginHandler = (
   email: string,
   password: string,
@@ -49,10 +48,10 @@ const navigate = useNavigate();
         text:  "Please check your username and password",
       });
       navigate('/post');
-    } catch (err: any) {
+    } catch (error:any) {
       setMessage({
-        type: "error",
-        text: err?.data || "Something went wrong",
+        type: error ,
+        text: "Something went wrong",
       });
     }
   };
