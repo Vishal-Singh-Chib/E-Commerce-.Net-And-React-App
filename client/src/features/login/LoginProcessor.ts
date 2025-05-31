@@ -1,6 +1,7 @@
 // src/features/auth/useLoginHandler.ts
-import type { Message } from "../../app/models/Message";
-import { useLoginOrRegisterMutation } from "./loginAPI";
+import type { Message } from "../../app/models/message"; // ✅ Correct
+
+import { useLoginOrRegisterMutation } from "./LoginAPI";
 import { useNavigate } from "react-router-dom";
 export const useLoginHandler = (
   email: string,
@@ -48,12 +49,18 @@ const navigate = useNavigate();
         text:  "Please check your username and password",
       });
       navigate('/post');
-    } catch (error:any) {
-      setMessage({
-        type: error ,
-        text: "Something went wrong",
-      });
-    }
+    } catch (error: unknown) {
+  let errorMessage = "Something went wrong";
+
+  if (typeof error === "object" && error !== null && "message" in error) {
+    errorMessage = (error as { message: string }).message;
+  }
+
+  setMessage({
+    type: "error", // or any other enum/type you use
+    text: errorMessage,
+  });
+}
   };
 
   return { handleSubmit, isLoading };

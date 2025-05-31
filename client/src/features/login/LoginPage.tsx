@@ -90,17 +90,18 @@ export const LoginPage: React.FC = () => {
             sx={{ mb: 3 }}
             onChange={(e) => setPassword(e.target.value)}
           />
-
+<form onSubmit={handleSubmit}>
           <Button
+            type="submit"
             variant="contained"
             fullWidth
             color="primary"
             sx={{ fontWeight: "bold", py: 1.5 }}
-            onClick={handleSubmit}
             disabled={isLoading}
           >
             {isLoading ? <CircularProgress size={24} color="inherit" /> : "LOGIN / REGISTER"}
           </Button>
+          </form>
         </CardContent>
       </Card>
     </Box>

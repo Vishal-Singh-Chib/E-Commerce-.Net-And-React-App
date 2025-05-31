@@ -3,7 +3,7 @@ import counterReducer, { counterSlice } from "../../features/contact/counterRedu
 import { useDispatch, useSelector } from "react-redux";
 import { uiSlice } from "../layout/uiSlice";
  import { PostAPI } from "../../features/post/PostAPI";
-import { LoginAPI } from "../../features/login/loginAPI";
+import { LoginAPI } from "../../features/login/LoginAPI";
 
 export function configureTheStore(){
     return legacy_createStore(counterReducer)
