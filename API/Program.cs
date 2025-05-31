@@ -38,7 +38,7 @@ app.UseAuthorization();
 
 app.UseCors(opt =>
 {
-    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3000","https://localhost:3001", "https://social-platform-net-and-react-app.vercel.app");
+    opt.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:3000","https://localhost:3001", "https://socialplatformfortest.netlify.app/");
 });
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
