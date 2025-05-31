@@ -9,6 +9,7 @@
     upvotes: number;
     downvotes: number;
     comments: Comment[];
+     isFollowedUser : boolean;
   }
 
   export interface Comment {
@@ -47,5 +48,6 @@
     upvotes: number;
     downvotes: number;
     comments: CommentType[];
+    isFollowedUser : boolean;
   };
  

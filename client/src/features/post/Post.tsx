@@ -25,7 +25,8 @@ import {
   useUnfollowUserMutation,
 } from "../post/PostAPI";
 import type { CommentType, PostType } from "../../app/models/content";
-
+import UnAuthorized from "../../app/layout/UnAuthorized";
+import { formatDistanceToNow } from 'date-fns';
 export const Post: React.FC = () => {
   const { data: posts, refetch } = useGetPostsQuery();
   const [createPost] = useCreatePostMutation();
@@ -99,13 +100,19 @@ export const Post: React.FC = () => {
       return (
         <Box key={comment.id} ml={level * 4} mt={2}>
           <Box display="flex" alignItems="center" gap={1}>
-            <Avatar sx={{ width: 24, height: 24 }}>
-              {comment.authorEmail[0].toUpperCase().split("@")[0]}
-            </Avatar>
+          <Avatar sx={{ width: 24, height: 24 }}>
+            {comment.authorEmail[0].toUpperCase().split("@")[0]}
+          </Avatar>
+          <Box>
             <Typography variant="body2">
               <strong>{comment.authorEmail.split("@")[0]}:</strong> {comment.text}
             </Typography>
+            <Typography variant="caption" color="text.secondary">
+              {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+            </Typography>
           </Box>
+        </Box>
+
 
           <Box display="flex" alignItems="center" mt={1} gap={1}>
             <TextField
@@ -129,6 +136,7 @@ export const Post: React.FC = () => {
 
   return (
     <Box p={3} minHeight="100vh">
+      <UnAuthorized/>
       <Card sx={{ mb: 3, p: 2, borderRadius: 3, boxShadow: 3 }}>
         <Typography variant="h6" mb={2}>Create a Post</Typography>
         <Box display="flex" gap={2}>
@@ -152,12 +160,19 @@ export const Post: React.FC = () => {
           <Card key={post.id} sx={{ mb: 3, borderRadius: 3, boxShadow: 2 }}>
             <CardContent>
               <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+               <Box>
                 <Typography variant="body1">
                   <strong>{post.authorEmail.split("@")[0]}:</strong> {post.content}
                 </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
+                </Typography>
+              </Box>
+
+                
 
                 {post.authorEmail !== userEmail && (
-                  <Tooltip title={following.includes(post.authorEmail) ? "Unfollow" : "Follow"}>
+                  <Tooltip title={post.isFollowedUser ? "Unfollow" : "Follow"}>
                     <IconButton
                       aria-label="Follow user"
                       color="primary"
@@ -166,7 +181,7 @@ export const Post: React.FC = () => {
                           if (following.includes(post.authorEmail)) {
                             await unfollowUser({
                               followerEmail: userEmail,
-                              followingEmail: post.authorEmail,
+                              followeeEmail: post.authorEmail,
                             }).unwrap();
                             setFollowing((prev) =>
                               prev.filter((email) => email !== post.authorEmail)
@@ -185,7 +200,7 @@ export const Post: React.FC = () => {
                       }}
                     >
                       <PersonAddAltIcon
-                        color={following.includes(post.authorEmail) ? "disabled" : "inherit"}
+                        color={post.isFollowedUser ? "disabled" : "inherit"}
                       />
                     </IconButton>
                   </Tooltip>
