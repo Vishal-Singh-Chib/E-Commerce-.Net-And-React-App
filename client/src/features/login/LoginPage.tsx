@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import { useLoginHandler } from "./LoginProcessor";
-import type { Message } from "../../app/models/Message";
+import type { Message } from "../../app/models/message";
 
 
 export const LoginPage: React.FC = () => {
