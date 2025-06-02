@@ -1,0 +1,5 @@
+
+[build]
+builder = "dockerfile"
+dockerfilePath = "API/Dockerfile"
+buildContext = "API"
