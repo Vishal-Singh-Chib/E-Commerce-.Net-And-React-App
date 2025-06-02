@@ -1,4 +1,3 @@
-
 # Stage 1: Build
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
@@ -7,7 +6,7 @@ WORKDIR /src
 COPY ["API.csproj", "."]
 RUN dotnet restore "API.csproj"
 
-# Copy the rest of the code
+# Copy everything else
 COPY . .
 RUN dotnet publish "API.csproj" -c Release -o /app/publish
 
