@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0.400 AS build
 WORKDIR /src
 
 # Copy csproj and restore
@@ -11,7 +11,7 @@ COPY . .
 RUN dotnet publish "API.csproj" -c Release -o /app/publish
 
 # Stage 2: Runtime
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.10 AS final
 WORKDIR /app
 COPY --from=build /app/publish .
 
