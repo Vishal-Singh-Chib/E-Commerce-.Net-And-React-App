@@ -2,11 +2,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0.400 AS build
 WORKDIR /src
 
-# Copy csproj and restore
-COPY ["API.csproj", "."]
+COPY ["API/API.csproj", "API/"]
+WORKDIR /src/API
 RUN dotnet restore "API.csproj"
 
-# Copy everything else
 COPY . .
 RUN dotnet publish "API.csproj" -c Release -o /app/publish
 
